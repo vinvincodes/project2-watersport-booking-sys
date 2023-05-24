@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - FINAL project 2 !!! - part 2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300&amp;display=swap'>
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.min.css'>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<head>
+  <title>Watersport Information</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="UTF-8"> <!-- to attach the emoji code -->
+</head>
+
+<body>
+
+  <!--   ==================================== MAIN PAGE: NAVBAR AND FOOTBAR PAGE ============================= -->
+  <div id="app">
+    <nav class="navbar" style="background-color:#90e0ef;">
+      <div class="navbar-brand">
+        <router-link class="navbar-brand" to="/" style="color:black; font-weight:bold;">Watersport <span style="color:#7549b1;font-weight:bold; font-size: 30px"> Bali</span></router-link>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <router-link to="/package-vue" class="navbar-item">Packages</router-link>
+          <router-link to="/login" class="navbar-item">Login</router-link>
+          <router-link to="/sign-in" class="navbar-item">Sign In</router-link>
+        </div>
+        <div class="navbar-end">
+          <router-link to="/contact" class="navbar-item">Contact</router-link>
+        </div>
+      </div>
+      <button class="navbar-burger" @click="toggleMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <!--     allows to navigate other components such as packages, login, sign in, contact, description pages that I've created, also with transition which allows to animated when click to other pages -->
+    <transition name="fade-slide" mode="out-in">
+      <router-view></router-view>
+    </transition>
+
+    <!--     about us section -->
+    <!-- reference link:https://www.youtube.com/watch?v=YOb67OKw62s -->
+    <footer>
+      <h4>About us</h4>
+      <p>At our watersport booking service in Bali, we provide tourists with an easy and enjoyable experience to book their favourite watersports activities.
+        We commit to offering each customer the best service possible and make sure they have a wonderful time. With a user-friendly website and efficient booking tools, we strive to make your trip to Bali even more relaxing and easy.
+      </p>
+
+      <h4>follow us</h4>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!--   ================================================== MAIN PAGE ===================================== -->
+  <template id="home">
+    <!--   package button with image of beach -->
+    <div class="hero-image">
+      <div class="package-home">
+        <h1>welcome in Bali!</h1>
+        <h3>Checkout watersport packages below</h3>
+        <router-link to="/package-vue" class="btn-pack">Packages</router-link>
+      </div>
+    </div>
+  </template>
+
+  <!--   ======================================= LOGIN PAGE ================================== -->
+  <template id="login">
+    <div class="hero-img">
+      <form @submit="loginUser">
+        <div class="container-reg">
+          <h1 style="color:black">Login</h1>
+          <p>Please fill in this form for login</p>
+          <hr>
+
+          <label for="email"><b>Email</b></label>
+          <input type="email" placeholder="Enter Email" v-model="emailLogin" style="background: #f1f1f1" required>
+
+          <label for="password"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" v-model="passwordLogin" required>
+
+          <hr>
+          <button type="submit" class="registerbtn">Login</button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!--  ===================================BOOKING SYSTEM PAGE ======================================= -->
+  <template id="booking-sys">
+    <div class="hero-img">
+      <!--   reference: https://codepen.io/tutsplus/pen/wNaGjy -->
+      <h1>Booking system</h1>
+      <form @submit="submitForm">
+
+        <!-- select watersport -->
+        <div class="elem-group">
+          <label for="watersport-selection">Watersport selection</label>
+          <select id="watersport-selection" name="watersport_selects" v-model="selectedActivity" required>
+            <option value="">Please select watersport you want to play</option>
+            <option value="Jetski">Jetski</option>
+            <option value="Banana-Boat">Banana Boat</option>
+            <option value="Snorkel">Snorkel</option>
+          </select>
+        </div>
+
+        <!--   How many people/person -->
+        <div class="elem-group inlined">
+          <label for="adult">Adults</label>
+          <input type="number" id="total_adults" name="total_adults" placeholder="2" min="1" max="7" required class="showbx" v-model="totalAdults" />
+        </div>
+        <div class="elem-group inlined">
+          <label for="child">Children (18-13 y.o)</label>
+          <input type="number" id="total_children" name="total_children" placeholder="2" min="0" max="7" required class="showbx" v-model="totalChildren" />
+        </div>
+
+        <!--     Booking date watersport -->
+
+        <div class="elem-group">
+          <label for="checkin">Booking Date</label>
+          <input type="date" id="checkin" name="checkin" v-model="bookingDate" required />
+        </div>
+
+        <!--   Location prefer where you spot for watersporting -->
+        <div class="elem-group">
+          <label for="location-selection">Location preference</label>
+          <select id="location-selection" name="location_preference" required>
+            <option value="">Choose location where you ride watersport</option>
+            <option value="Tanjung-Benoa">Tanjung Benoa</option>
+            <option value="Nusa-Dua">Nusa Dua</option>
+            <option value="Seminyak">Sanur</option>
+            <option value="Seminyak">Kuta</option>
+          </select>
+        </div>
+
+        <!--  Duration and price  -->
+
+        <!-- 150k = 15 min -->
+        <!-- 300k = 30 min -->
+        <!-- 600k = 1 hr -->
+        <!-- reference: https://www.youtube.com/watch?v=qDxcQHecxMY -->
+        <!--     this reference, need some more modify myself -->
+        <section class="container-test">
+          <label for="room-selection">Price</label>
+          <div class="app-paper">
+            <form action="jetski-pack-price">
+              <input type="radio" name="brandtype" v-bind:id="duration.id" v-bind:value="duration.price" required v-for="duration in durations" :key="duration.id" />
+              <label class="lbl-radio" v-bind:for="duration.id" v-for="duration in durations" :key="duration.id">
+                <div class="display-box">
+                  <div class="duration">{{ duration.label }}</div>
+                  <div class="price">{{ duration.price }}</div>
+                </div>
+              </label>
+            </form>
+          </div>
+        </section>
+
+        <hr />
+
+        <div class="elem-group">
+          <label for="visitor_message">Anything Else?</label>
+          <textarea id="visitor_message" name="visitor_message" v-model="message" placeholder="Tell us anything else that might be important."></textarea>
+        </div>
+        <button type="submit" class="booking-button">Book</button>
+
+      </form>
+    </div>
+  </template>
+
+  <!--   ============================================= WATERSPORT PACKAGES ==================================== -->
+  <template id="package-vue">
+    <!--  =========== pictures of watersport, horizontally, side-by-side ============== -->
+    <!--   <div id="package-list"> -->
+    <!--image card layout start-->
+    <div class="container-pack">
+      <!--image row start [1]-->
+      <div class="row">
+        <!--image card start-->
+        <div class="image">
+          <img src="https://img.barrierreefaustralia.com/files/media/companies/f-j-operators/gsl-aviation/123603005_910010102869466_7594780427385760562_o.jpg" alt="jet-ski" class="img-adjust">
+          <div class="details">
+            <h2><span>JetSki</span></h2>
+            <p>Rp 150k - 600k / Person</p>
+            <div class="more">
+              <router-link to="/description-jetski" class="read-more">Book <span>Now!</span></router-link>
+            </div>
+          </div>
+        </div>
+
+        <!--image card end-->
+        <!--image card start [2]-->
+        <div class="image">
+          <img src="https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_2424,h_1616,f_auto/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/n9fpx5btwbqc8gwf05gz/BananaBoatinBali,Indonesia-KlookAustralia.jpg" alt="banana-boat" class="img-adjust">
+          <div class="details">
+            <h2><span>Banana Boat</span></h2>
+            <p>Rp 50k - 200k / Person</p>
+            <div class="more">
+              <router-link to="/description-bananaboat" class="read-more">Book <span>Now!</span></router-link>
+
+            </div>
+          </div>
+        </div>
+        <!--image card end-->
+        <!--image card start [3]-->
+        <div class="image">
+          <img src="https://media.tacdn.com/media/attractions-splice-spp-674x446/0a/97/70/bc.jpg" alt="snorkelling" class="img-adjust">
+          <div class="details">
+            <h2><span>Snorkelling</span></h2>
+            <p>Rp 32k - 130k / Person</p>
+            <div class="more">
+              <router-link to="/description-snorkel" class="read-more">Book <span>Now!</span></router-link>
+
+            </div>
+          </div>
+        </div>
+        <!--image card end-->
+      </div>
+      <!--image row end-->
+    </div>
+
+    <div class="container-space"></div>
+    <!--   </div> -->
+
+  </template>
+
+  <!--   ========================================== SIGN IN PAGE =============================== -->
+  <template id="sign-in">
+    <div class="hero-img">
+      <form @submit="registerUser">
+        <div class="container-reg">
+          <h1 style="color:black">Register</h1>
+          <p>Please fill in this form to create an account.</p>
+          <hr>
+
+          <label for="email"><b>Email</b></label>
+          <input type="email" placeholder="Enter Email" v-model="emailSign" style="background: #f1f1f1" required>
+
+          <label for="password"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" v-model="passwordSign" required>
+
+          <label for="confirmPassword"><b>Confirm Password</b></label>
+          <input type="password" placeholder="Confirm Password" v-model="confirmPassword" required>
+          <hr>
+          <button type="submit" class="registerbtn">Register</button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!--         <div class="container-reg signin">
+                    <p>Already have an account? Click<a href="#"> Login</a>.</p>
+                    <p>Already have an account? Click <router-link to="/login" class="booking-info-button">Login</router-link>.</p>
+
+        </div> -->
+
+  <!--   ========================================= CONTACT PAGE ================================== -->
+  <template id="contact">
+    <div class="hero-img">
+      <form @submit="contactForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" v-model="nameContact" placeholder="Enter your name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="emailContact" placeholder="Enter you Email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" v-model="messageContact" placeholder="What can I help you? Any feedback?" required></textarea>
+        <button type="submit" class="booking-button">Submit</button>
+      </form>
+    </div>
+  </template>
+
+  <!--   ============================================== DESCRIPTION JETSKI PAGE ================================ -->
+  <template id="description-jetski">
+    <div>
+      <!--  =============jet ski carousel, booking info, desc, location map ================ -->
+      <div class="grp-jet-info">
+        <div class="carousel-jetski-pic">
+          <!--     Reference: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_slideshow -->
+          <div class="slideshow-container">
+
+            <div class="mySlides fade">
+              <img src="https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/de/19/af.jpg">
+            </div>
+
+            <div class="mySlides fade">
+              <img src="http://watersport-tanjungbenoa-bali.com/wp-content/uploads/2014/07/water-sport-tanjung-benoaw.jpg">
+            </div>
+
+            <div class="mySlides fade">
+              <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/de/51/6d/caption.jpg?w=500&h=400&s=1">
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+
+          </div>
+
+          <br>
+
+          <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+          </div>
+        </div>
+
+        <div class="booking-info">
+          <h1>Jet-ski</h1>
+          <p>price: Rp 150k - 600k per person</p>
+          <router-link to="/booking-sys" class="booking-info-button">Book</router-link>
+        </div>
+      </div>
+
+      <div class="grp-desc-loc">
+        <div class="description">
+          <h3>Description</h3>
+          <p>Jet skiing is a thrilling water sport that is popular in Bali. With calm waters and beautiful scenery, locations like Tanjung Benoa, Nusa Dua, Kuta, and Sanur offer the perfect setting for a jet ski adventure. Whether you're a beginner or an experienced jet skier, there are plenty of options available to suit your skill level. Don't miss out on the opportunity to experience the rush of adrenaline as you speed across the waves and explore Bali's stunning coastline.</p>
+        </div>
+
+        <!--   if you wanna zoom in or out, you can customise `z` in this link, e.g., z=10 -->
+
+        <div class="loc-map">
+          <iframe src="https://www.google.com/maps/d/u/3/embed?mid=1CzJ8wI4gz5Y0lKnX7PflaDc_fBkHWYs&z=11&t=m&output=embed&iwloc=near&q=Bali+Amarta+Watersports+Sanur|Water+Sport+Tanjung+Benoa+Club|Nusa+Dua+Water+Sports|Bali+Amarta+Watersports+Kuta" width="100%" height="380"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </template>
+
+  <!--   ============================================== DESCRIPTION BANANA BOAT PAGE ================================ -->
+  <template id="description-bananaboat">
+    <div>
+      <!--  =============jet ski carousel, booking info, desc, location map ================ -->
+      <div class="grp-jet-info">
+        <div class="carousel-jetski-pic">
+          <!--     Reference: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_slideshow -->
+          <div class="slideshow-container">
+
+            <div class="mySlides fade">
+              <img src="https://www.bigbalitours.com/images/slide/bali-water-sport_20180523060013.jpg">
+            </div>
+
+            <div class="mySlides fade">
+              <img src="https://baliwatersporttour.com/wp-content/uploads/bali-banana-boat-ride-game.jpg">
+            </div>
+
+            <div class="mySlides fade">
+              <img src="https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1200,h_630/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/j5xk7mqwnbzyyxzqgez5/Banana%20Boat%20in%20Bali,%20Indonesia.jpg">
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+
+          </div>
+
+          <br>
+
+          <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+          </div>
+        </div>
+
+        <div class="booking-info">
+          <h1>Banana Boat</h1>
+          <p>price: Rp 50k - 200k per person</p>
+          <router-link to="/booking-sys" class="booking-info-button">Book</router-link>
+        </div>
+      </div>
+
+      <div class="grp-desc-loc">
+        <div class="description">
+          <h3>Description</h3>
+          <p>Banana boating is a fun and exciting water activity that is perfect for groups and families looking to have a blast on the water. In Bali, you can find banana boat rides at popular beach locations such as Tanjung Benoa, Nusa Dua, Kuta, and Sanur. A banana boat ride involves a large inflatable boat in the shape of a banana being pulled along the water by a speedboat. Hang on tight as you bounce across the waves and enjoy the stunning views of Bali's coastline. Banana boat rides are suitable for all ages and can be enjoyed by everyone. Don't miss out on the opportunity to experience the thrill of banana boating in Bali!</p>
+        </div>
+
+        <!--   if you wanna zoom in or out, you can customise `z` in this link, e.g., z=10 -->
+
+        <div class="loc-map">
+          <iframe src="https://www.google.com/maps/d/u/3/embed?mid=1CzJ8wI4gz5Y0lKnX7PflaDc_fBkHWYs&z=11&t=m&output=embed&iwloc=near&q=Bali+Amarta+Watersports+Sanur|Water+Sport+Tanjung+Benoa+Club|Nusa+Dua+Water+Sports|Bali+Amarta+Watersports+Kuta" width="100%" height="380"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </template>
+
+  <!--   ============================================== DESCRIPTION SNORKEL PAGE ================================ -->
+  <template id="description-snorkel">
+    <div>
+      <!--  =============jet ski carousel, booking info, desc, location map ================ -->
+      <div class="grp-jet-info">
+        <div class="carousel-jetski-pic">
+          <!--     Reference: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_slideshow -->
+          <div class="slideshow-container">
+
+            <div class="mySlides fade">
+              <img src="https://media.tacdn.com/media/attractions-splice-spp-674x446/07/74/73/c7.jpg">
+            </div>
+
+            <div class="mySlides fade">
+              <img src="https://www.balitoursandmore.com/wp-content/uploads/2018/02/Padang-Bai-bali-snokeling-tours-7.jpg">
+            </div>
+
+            <div class="mySlides fade">
+              <img src="https://www.villacarissabali.com/wp-content/uploads/2023/02/Best-snorkeling-spots-in-Bali.jpg">
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+
+          </div>
+
+          <br>
+
+          <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+          </div>
+        </div>
+
+        <div class="booking-info">
+          <h1>Snorkelling</h1>
+          <p>price: Rp 32k - 130k per person</p>
+          <router-link to="/booking-sys" class="booking-info-button">Book</router-link>
+        </div>
+      </div>
+
+      <div class="grp-desc-loc">
+        <div class="description">
+          <h3>Description</h3>
+          <p>Snorkeling is an incredible way to explore the beauty of Bali's underwater world. With crystal clear waters and a rich variety of marine life, Bali offers some of the best snorkeling spots in the world. Locations like Nusa Lembongan, Amed, Menjangan Island, and Blue Lagoon offer excellent opportunities to witness colorful coral reefs, tropical fish, and even turtles. Whether you're a seasoned snorkeler or a beginner, Bali's warm waters and abundance of marine life make it the perfect destination for a memorable snorkeling adventure. Don't miss the chance to discover Bali's vibrant underwater world!</p>
+        </div>
+
+        <!--   if you wanna zoom in or out, you can customise `z` in this link, e.g., z=10 -->
+
+        <div class="loc-map">
+          <iframe src="https://www.google.com/maps/d/u/3/embed?mid=1CzJ8wI4gz5Y0lKnX7PflaDc_fBkHWYs&z=11&t=m&output=embed&iwloc=near&q=Bali+Amarta+Watersports+Sanur|Water+Sport+Tanjung+Benoa+Club|Nusa+Dua+Water+Sports|Bali+Amarta+Watersports+Kuta" width="100%" height="380"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </template>
+
+  <!-- This is for carousel functions using javascripts -->
+  <script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      let slides = document.getElementsByClassName("mySlides");
+      let dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {
+        slideIndex = 1
+      }
+      if (n < 1) {
+        slideIndex = slides.length
+      }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+    }
+  </script>
+
+</body>
+<!-- partial -->
+  <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js'></script>
+<script src='https://unpkg.com/vuex@2.5.0/dist/vuex.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.0.1/vue-router.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
